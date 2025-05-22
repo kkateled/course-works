@@ -3,43 +3,84 @@ package mycats;
 import java.sql.*;
 
 public class MyCats {
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/my_cats";
-    static final String USER = System.getenv("USER");
-    static final String PASSWORD = System.getenv("PASSWORD");
-
-    public static Connection connection;
-    public static Statement statement;
-
-    public static void connect() throws SQLException {
-        connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-        statement = connection.createStatement();
+    public static void add_all_types() {
+             String[] types = new String[]{"Абиссинская кошка",
+                    "Австралийский мист",
+                    "Американская жесткошерстная",
+                    "Американская короткошерстная",
+                    "Американский бобтейл",
+                    "Американский кёрл",
+                    "Балинезийская кошка",
+                    "Бенгальская кошка",
+                    "Бирманская кошка",
+                    "Бомбейская кошка",
+                    "Бразильская короткошёрстная",
+                    "Британская длинношерстная",
+                    "Британская короткошерстная",
+                    "Бурманская кошка",
+                    "Бурмилла кошка",
+                    "Гавана",
+                    "Гималайская кошка",
+                    "Девон-рекс",
+                    "Донской сфинкс",
+                    "Европейская короткошерстная",
+                    "Египетская мау",
+                    "Канадский сфинкс",
+                    "Кимрик",
+                    "Корат",
+                    "Корниш-рекс",
+                    "Курильский бобтейл",
+                    "Лаперм",
+                    "Манчкин",
+                    "Мейн-ку́н",
+                    "Меконгский бобтейл",
+                    "Мэнкс кошка",
+                    "Наполеон",
+                    "Немецкий рекс",
+                    "Нибелунг",
+                    "Норвежская лесная кошка",
+                    "Ориентальная кошка",
+                    "Оцикет",
+                    "Персидская кошка",
+                    "Петерболд",
+                    "Пиксибоб",
+                    "Рагамаффин",
+                    "Русская голубая кошка",
+                    "Рэгдолл",
+                    "Саванна",
+                    "Селкирк-рекс",
+                    "Сиамская кошка",
+                    "Сибирская кошка",
+                    "Сингапурская кошка",
+                    "Скоттиш-фолд",
+                    "Сноу-шу",
+                    "Сомалийская кошка",
+                    "Тайская кошка",
+                    "Тойгер",
+                    "Тонкинская кошка",
+                    "Турецкая ангорская кошка",
+                    "Турецкий ван",
+                    "Украинский левкой",
+                    "Чаузи",
+                    "Шартрез",
+                    "Экзотическая короткошерстная",
+                    "Японский бобтейл"
+            };
+             for (String type : types) {
+                 DatabaseManager.insert_type(type);
+             }
     }
 
-    public static void create_tables() throws SQLException {
-        String SQL = "CREATE TABLE IF NOT EXISTS types " +
-                "(id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
-                " type VARCHAR(100) not NULL)";
-        statement.executeUpdate(SQL);
-    }
-
-    public static void insert_type(String type){
-        try {
-            String SQL = "INSERT INTO types (type) VALUES (?)";
-            PreparedStatement stmt = connection.prepareStatement(SQL);
-            stmt.setString(1, type);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Recording '"+type+"' already exists");
-        }
-    }
     public static void main(String[] args) {
         try{
-            connect();
-            create_tables();
-            insert_type("Абиссинская кошка");
-            insert_type("Австралийский мист");
-            insert_type("Американская жесткошерстная");
+            DatabaseManager.connect();
+//            create_tables();
+//            insert_type("Абиссинская кошка");
+//            insert_type("Австралийский мист");
+//            insert_type("Американская жесткошерстная");
+//            add_all_types();
+//            DatabaseManager.delete_type(65);
+//            DatabaseManager.update_type(66, "Новая порода");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error SQL !");
