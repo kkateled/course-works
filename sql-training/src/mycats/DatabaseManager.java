@@ -60,4 +60,45 @@ public class DatabaseManager {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void get_type(int id) throws SQLException {
+        try {
+            String SQL = "SELECT type FROM types WHERE id=(?)";
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()){
+                String  type = resultSet.getString(1);
+                System.out.println(type);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void get_type_where(String where) throws SQLException {
+        try {
+            String SQL = "SELECT type FROM types WHERE " + where;
+            ResultSet resultSet = statement.executeQuery(SQL);
+            while (resultSet.next()){
+                String  type = resultSet.getString(1);
+                System.out.println(type);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void get_all_types() throws SQLException {
+        try {
+            String SQL = "SELECT type FROM types";
+            ResultSet resultSet = statement.executeQuery(SQL);
+            while (resultSet.next()){
+                String  type = resultSet.getString(1);
+                System.out.println(type);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

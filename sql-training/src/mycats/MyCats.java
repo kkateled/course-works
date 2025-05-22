@@ -81,6 +81,10 @@ public class MyCats {
 //            add_all_types();
 //            DatabaseManager.delete_type(65);
 //            DatabaseManager.update_type(66, "Новая порода");
+//            DatabaseManager.get_type(66);
+//            DatabaseManager.get_type_where("id > 80");
+//            DatabaseManager.get_type_where("type LIKE '%а'");
+//            DatabaseManager.get_all_types();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error SQL !");
