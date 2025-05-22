@@ -45,7 +45,6 @@ public class StockExchangeDB {
     public static void main(String[] args) {
         try{
             StockExchangeDB stockExchangeDB = new StockExchangeDB();
-            // if doesnt exist:
             stockExchangeDB.createTablesAndForeignKeys();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,28 +1,48 @@
 package mycats;
+
 import java.sql.*;
 
 public class MyCats {
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/";
-//    public static final String DB_Driver = "com.mysql.jdbc.Driver";
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/my_cats";
     static final String USER = System.getenv("USER");
     static final String PASSWORD = System.getenv("PASSWORD");
 
-    public static void main(String[] args){
-        try {
-            Connection initConnection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-            Statement initStatement = initConnection.createStatement();
-            String SQL = "CREATE DATABASE IF NOT EXISTS My_cats";
-            initStatement.executeUpdate(SQL);
+    public static Connection connection;
+    public static Statement statement;
 
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/my_cats", USER, PASSWORD);
-            Statement statement = connection.createStatement();
-            SQL = "CREATE TABLE IF NOT EXISTS types " +
-                    "(id INTEGER, " +
-                    " type VARCHAR(100) not NULL)";
-            statement.executeUpdate(SQL);
+    public static void connect() throws SQLException {
+        connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        statement = connection.createStatement();
+    }
+
+    public static void create_tables() throws SQLException {
+        String SQL = "CREATE TABLE IF NOT EXISTS types " +
+                "(id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
+                " type VARCHAR(100) not NULL)";
+        statement.executeUpdate(SQL);
+    }
+
+    public static void insert_type(String type){
+        try {
+            String SQL = "INSERT INTO types (type) VALUES (?)";
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setString(1, type);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Ошибка SQL !");
+            System.out.println("Recording '"+type+"' already exists");
+        }
+    }
+    public static void main(String[] args) {
+        try{
+            connect();
+            create_tables();
+            insert_type("Абиссинская кошка");
+            insert_type("Австралийский мист");
+            insert_type("Американская жесткошерстная");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error SQL !");
         }
     }
 }
