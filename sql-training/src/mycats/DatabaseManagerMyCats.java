@@ -142,4 +142,85 @@ public class DatabaseManagerMyCats {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void delete_cat(int id) throws SQLException {
+        try {
+            String SQL = "DELETE FROM cats WHERE id=(?)";
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void delete_cat(String where)  throws SQLException {
+        try {
+            String SQL = "DELETE FROM cats WHERE " + where;
+            statement.executeUpdate(SQL);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void update_cat(int id, String set) throws SQLException {
+        try {
+            String SQL = "UPDATE cats SET " + set + " WHERE id=(?)";
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void update_cat(String set, String where) throws SQLException {
+        try {
+            String SQL = "UPDATE cats SET " + set + " WHERE " + where;
+            statement.executeUpdate(SQL);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void get_cat(int id) throws SQLException {
+        try {
+            String SQL = "SELECT name FROM cats WHERE id=(?)";
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()){
+                String  name = resultSet.getString(1);
+                System.out.println(name);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void get_cat_where(String where) throws SQLException {
+        try {
+            String SQL = "SELECT name FROM cats WHERE " + where;
+            ResultSet resultSet = statement.executeQuery(SQL);
+            while (resultSet.next()){
+                String  name = resultSet.getString(1);
+                System.out.println(name);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void get_all_cats() throws SQLException {
+        try {
+            String SQL = "SELECT name FROM cats";
+            ResultSet resultSet = statement.executeQuery(SQL);
+            while (resultSet.next()){
+                String  name = resultSet.getString(1);
+                System.out.println(name);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

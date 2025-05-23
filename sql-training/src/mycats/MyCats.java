@@ -43,7 +43,7 @@ public class MyCats {
         for (int i = 0; i < n; i += 1) {
             String name =  names[random.nextInt(names.length)];
             String type = types[random.nextInt(types.length)];
-            int age = 1 + (int) (Math.random() * 20);
+            int age = 1 + (int) (Math.random() * 10);
             double weight = 2 + (double) (Math.random() * 20);
             BigDecimal bd = new BigDecimal(weight);
             bd = bd.setScale(2, RoundingMode.HALF_UP);
@@ -55,22 +55,31 @@ public class MyCats {
     public static void main(String[] args) {
         try{
             DatabaseManagerMyCats.connect();
-//            DatabaseManagerMyCats.create_tables();
-//            DatabaseManagerMyCats.insert_type("Абиссинская кошка");
-//            DatabaseManagerMyCats.insert_type("Австралийский мист");
-//            DatabaseManagerMyCats.insert_type("Американская жесткошерстная");
-//            add_all_types();
-//            DatabaseManagerMyCats.delete_type(65);
-//            DatabaseManagerMyCats.update_type(66, "Новая порода");
-//            DatabaseManagerMyCats.get_type(66);
-//            DatabaseManagerMyCats.get_type_where("id > 80");
-//            DatabaseManagerMyCats.get_type_where("type LIKE '%а'");
-//            DatabaseManagerMyCats.get_all_types();
-//            DatabaseManagerMyCats.insert_cat("клепа", "самый новый вид", 3, 15.3);
-//            DatabaseManagerMyCats.insert_cat("клепа", "новейший вид", 3, 15.3);
-//            DatabaseManagerMyCats.insert_cat("дако", "Египетская мау", 1, 9.6);
-//            DatabaseManagerMyCats.insert_cat("маркиз", "Корат", 2, 4.6);
+            DatabaseManagerMyCats.create_tables();
+            DatabaseManagerMyCats.insert_type("Абиссинская кошка");
+            DatabaseManagerMyCats.insert_type("Австралийский мист");
+            DatabaseManagerMyCats.insert_type("Американская жесткошерстная");
+            add_all_types();
+            DatabaseManagerMyCats.delete_type(65);
+            DatabaseManagerMyCats.update_type(66, "Новая порода");
+            DatabaseManagerMyCats.get_type(66);
+            DatabaseManagerMyCats.get_type_where("id > 80");
+            DatabaseManagerMyCats.get_type_where("type LIKE '%а'");
+            DatabaseManagerMyCats.get_all_types();
+            DatabaseManagerMyCats.insert_cat("клепа", "самый новый вид", 3, 15.3);
+            DatabaseManagerMyCats.insert_cat("клепа", "новейший вид", 3, 15.3);
+            DatabaseManagerMyCats.insert_cat("дако", "Египетская мау", 1, 9.6);
+            DatabaseManagerMyCats.insert_cat("маркиз", "Корат", 2, 4.6);
             add_more_cats(5000);
+            DatabaseManagerMyCats.delete_cat(12);
+            DatabaseManagerMyCats.delete_cat("name LIKE '%а%'");
+            DatabaseManagerMyCats.delete_cat("id > 80");
+            DatabaseManagerMyCats.update_cat(7, "name='аляска'");
+            DatabaseManagerMyCats.update_cat("weight=6.5", "id BETWEEN 45 AND 65");
+            DatabaseManagerMyCats.get_cat(69);
+            DatabaseManagerMyCats.get_cat_where("id > 50");
+            DatabaseManagerMyCats.get_cat_where("name LIKE '%а'");
+            DatabaseManagerMyCats.get_all_cats();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error SQL !");
