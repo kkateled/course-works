@@ -1,7 +1,7 @@
 package mycats;
 import java.sql.*;
 
-public class DatabaseManager {
+public class DatabaseManagerMyCats {
     public static final String DB_URL = "jdbc:mysql://localhost:3306/my_cats";
     static final String USER = System.getenv("USER");
     static final String PASSWORD = System.getenv("PASSWORD");
@@ -15,10 +15,18 @@ public class DatabaseManager {
     }
 
     public static void create_tables() throws SQLException {
-        String SQL = "CREATE TABLE IF NOT EXISTS types " +
-                "(id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
+        String SQLMyCats = "CREATE TABLE IF NOT EXISTS types " +
+                "(id INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE, " +
                 " type VARCHAR(100) not NULL)";
-        statement.executeUpdate(SQL);
+        statement.executeUpdate(SQLMyCats);
+        String SQLCats = "CREATE TABLE IF NOT EXISTS cats " +
+                "(id INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE, " +
+                " name VARCHAR(20) not NULL," +
+                " type_id INTEGER not NULL, " +
+                " age INTEGER not NULL, " +
+                " weight DOUBLE," +
+                " FOREIGN KEY (type_id) REFERENCES types(id) ON DELETE CASCADE)";
+        statement.executeUpdate(SQLCats);
     }
 
     public static void insert_type(String type) {
@@ -97,6 +105,39 @@ public class DatabaseManager {
                 String  type = resultSet.getString(1);
                 System.out.println(type);
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void insert_cat(String name, String type, int age, Double weight)  throws SQLException {
+        int type_id = 0;
+        try {
+            String selectSql = "SELECT * FROM types WHERE type = '" + type + "'";
+            ResultSet rs = statement.executeQuery(selectSql);
+            if (rs.next()) {
+                // Type already exists in the table.
+                type_id = rs.getInt("id");
+            } else {
+                // Type doesn't exist in the table.
+                String SQL = "INSERT INTO types (type) VALUES (?)";
+                PreparedStatement stmt = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, type);
+                stmt.executeUpdate();
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    type_id = generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Failed to get new type id.");
+                }
+            }
+            String SQL = "INSERT INTO cats (name, type_id, age, weight) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setString(1, name);
+            stmt.setInt(2, type_id);
+            stmt.setInt(3, age);
+            stmt.setDouble(4, weight);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
